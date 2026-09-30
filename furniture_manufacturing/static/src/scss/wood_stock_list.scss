@@ -1,0 +1,21 @@
+.o_wood_stock_line_list {
+    table-layout: fixed !important;
+
+    .o_list_table {
+        table-layout: fixed !important;
+    }
+
+    thead th, tbody td {
+        &:nth-child(1) { width: 35% !important; }  // product_id
+        &:nth-child(2) { width: 15% !important; }  // uom_id
+        &:nth-child(3) { width: 15% !important; }  // rate
+        &:nth-child(4) { width: 15% !important; }  // quantity
+        &:nth-child(5) { width: 20% !important; }  // worker_time
+    }
+
+    td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ================= LIST VIEW ================= -->
+    <record id="view_raw_material_stock_list" model="ir.ui.view">
+        <field name="name">furniture.raw.material.stock.list</field>
+        <field name="model">furniture.raw.material.stock</field>
+        <field name="arch" type="xml">
+            <list string="Raw Material Stock">
+                <field name="name"/>
+                <field name="purchase_order_id"/>
+                <field name="purchase_date"/>
+                <field name="vendor_id"/>
+<!--                <field name="status" widget="badge"/>-->
+            </list>
+        </field>
+    </record>
+
+    <!-- ================= FORM VIEW ================= -->
+    <record id="view_raw_material_stock_form" model="ir.ui.view">
+        <field name="name">furniture.raw.material.stock.form</field>
+        <field name="model">furniture.raw.material.stock</field>
+        <field name="arch" type="xml">
+            <form string="Raw Material Stock">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Vendor">
+                            <field name="vendor_id"/>
+                        </group>
+                        <group string="Sourcing">
+                            <field name="purchase_date"/>
+                            <field name="purchase_order_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="wood_stock_list" string="Wood Stock List">
+                            <field name="wood_stock_line">
+                                <list editable="bottom" class="o_wood_stock_line_list">
+                                    <field name="product_id" domain="[('sale_ok', '=', False)]"/>
+                                    <field name="quantity"/>
+                                    <field name="rate"/>
+                                    <field name="sub_total" sum="Total"/>
+                                    <field name="worker_time"/>
+                                    <field name="worker_rate" sum="Worker's Rate"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================= ACTION ================= -->
+    <record id="action_wood_in_stock_mill" model="ir.actions.act_window">
+        <field name="name">Timber Stock</field>
+        <field name="res_model">furniture.raw.material.stock</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new raw material stock entry
+            </p>
+            <p>
+                Track timber lots received at the Mill (or any stage), including
+                dimensions, grade, moisture content and sourcing details.
+            </p>
+        </field>
+    </record>
+
+    <!-- ================= MENU ================= -->
+
+    <menuitem id="menu_wood_in_stock_mill"
+              name="Mill"
+              parent="menu_wood_in_stock"
+              action="action_wood_in_stock_mill"
+              sequence="10"/>
+
+</odoo>

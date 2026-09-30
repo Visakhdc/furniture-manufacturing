@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="furniture_management_tree_view" model="ir.ui.view">
+        <field name="name">furniture.management.view.list</field>
+        <field name="model">furniture.management</field>
+        <field name="arch" type="xml">
+            <list string="Furniture Manufacturing">
+                <field name="product_id" readonly="1" />
+                <field name="uom_id" readonly="1" />
+                <field name="on_hand" readonly="1" />
+            </list>
+        </field>
+    </record>
+    <record id="furniture_management_form_view" model="ir.ui.view">
+        <field name="name">furniture.management.form</field>
+        <field name="model">furniture.management</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        name="action_assembly"
+                        string="Start Assembly"
+                        type="object"
+                        class="oe_highlight"
+                        invisible="state != 'draft'"
+                    />
+
+                    <!-- Assembly → Polishing -->
+                    <button
+                        name="action_polishing"
+                        string="Start Polishing"
+                        type="object"
+                        class="oe_highlight"
+                        invisible="state != 'assembly'"
+                    />
+
+                    <!-- Polishing → Upholstery -->
+                    <button
+                        name="action_upholstery"
+                        string="Start Upholstery"
+                        type="object"
+                        class="oe_highlight"
+                        invisible="state != 'polishing'"
+                    />
+
+                    <!-- Upholstery → Quality Check -->
+                    <button
+                        name="action_quality_check"
+                        string="Quality Check"
+                        type="object"
+                        class="oe_highlight"
+                        invisible="state != 'upholstery'"
+                    />
+
+                    <!-- Quality Check → Done -->
+                    <button
+                        name="action_done"
+                        string="Mark as Done"
+                        type="object"
+                        class="oe_highlight"
+                        invisible="state != 'quality_check'"
+                    />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,assembly,polishing,upholstery,quality_check,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="product_id" domain="[('sale_ok', '=', True)]"/>
+                            <field name="uom_id"/>
+                        </group>
+                        <group>
+                            <field name="on_hand"/>
+                            <field name="date"/>
+                            <field name="color" widget="color_picker" string="Color"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="components" string="Components">
+                            <field name="components_line">
+                                <list editable="bottom">
+                                    <field name="product_id" domain="[('sale_ok', '=', False)]"/>
+                                    <field name="availability_status"/>
+                                    <field name="quantity"/>
+                                    <field name="uom_id"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================= KANBAN VIEW ================= -->
+    <record id="furniture_management_kanban_view" model="ir.ui.view">
+        <field name="name">furniture.management.view.kanban</field>
+        <field name="model">furniture.management</field>
+        <field name="arch" type="xml">
+            <kanban highlight_color="color" default_group_by="state" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="product_id"/>
+                <field name="on_hand"/>
+                <field name="uom_id"/>
+                <field name="state"/>
+                <templates>
+                    <templates>
+                        <t t-name="card">
+                            <div class="row">
+                                <div class="col-8">
+                                    <field class="fw-bolder" name="name"/>
+                                    <field class="badge rounded-pill" name="product_id"/>
+                                </div>
+                            </div>
+                            <div class="text-muted">
+                                <field name="on_hand"/> <field name="uom_id"/>
+                            </div>
+                        </t>
+                    </templates>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ================= PIVOT VIEW ================= -->
+    <record id="view_furniture_management_pivot" model="ir.ui.view">
+        <field name="name">furniture.management.pivot</field>
+        <field name="model">furniture.management</field>
+        <field name="arch" type="xml">
+            <pivot string="Manufacturing Analysis">
+                <field name="product_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="on_hand" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- ================= GRAPH VIEW ================= -->
+    <record id="view_furniture_management_graph" model="ir.ui.view">
+        <field name="name">furniture.management.graph</field>
+        <field name="model">furniture.management</field>
+        <field name="arch" type="xml">
+            <graph string="Manufacturing Analysis" type="bar">
+                <field name="product_id" type="row"/>
+                <field name="on_hand" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_furniture_management" model="ir.actions.act_window">
+        <field name="name">Furniture Manufacturing</field>
+        <field name="res_model">furniture.management</field>
+        <field name="view_mode">kanban,list,form,graph,pivot</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No record yet!
+            </p>
+            <p>
+                Create your first Record.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_furniture_manufacturing_root" name="Manufacturing"/>
+    <menuitem
+        id="menu_furniture_manufacturing"
+        parent="menu_furniture_manufacturing_root"
+        action="action_furniture_management"/>
+
+    <menuitem
+        id="menu_wood_in_stock"
+        name="Wood In Stock"
+        parent="menu_furniture_manufacturing_root"
+        sequence="10"/>
+
+
+
+</odoo>

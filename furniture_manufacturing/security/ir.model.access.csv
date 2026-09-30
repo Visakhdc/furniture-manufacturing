@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_furniture_management,furniture.management,model_furniture_management,,1,1,1,1
+access_furniture_raw_material_stock,furniture.raw.material.stock,model_furniture_raw_material_stock,,1,1,1,1
+access_manufacturing_components,manufacturing.components,model_manufacturing_components,,1,1,1,1
+access_wood_stock_components,wood.stock.components,model_wood_stock_components,,1,1,1,1

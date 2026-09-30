@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_furniture_raw_material_stock" model="ir.sequence">
+        <field name="name">Raw Material Stock Reference</field>
+        <field name="code">furniture.raw.material.stock</field>
+        <field name="prefix">RMS/%(year)s/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="seq_furniture_management" model="ir.sequence">
+        <field name="name">Furniture Management Reference</field>
+        <field name="code">furniture.management</field>
+        <field name="prefix">FM/%(year)s/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>
